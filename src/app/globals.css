@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/*
+ * Everyday Tech Repair design tokens.
+ * Source of truth: the approved brand sheet (palette + typography).
+ * Colors marked "derived" are accessibility tints/shades of a brand color,
+ * added only where the pure brand color fails WCAG AA contrast.
+ */
+@theme {
+  /* Brand palette */
+  --color-cyan: #08b8f5; /* Electric Cyan */
+  --color-navy: #07182e; /* Deep Navy */
+  --color-blue: #1478ed; /* Blue */
+  --color-offwhite: #f4f7fb; /* Off-White */
+
+  /* Derived */
+  --color-cyan-soft: #e3f6fe; /* cyan tint for icon chips / highlights */
+  --color-cyan-bright: #45cbf9; /* hover on cyan buttons */
+  --color-blue-ink: #0f62c9; /* link text on light backgrounds (AA) */
+  --color-navy-soft: #0e2747; /* raised surfaces on navy */
+  --color-ink: #07182e; /* body text = navy */
+  --color-muted: #4a5b70; /* secondary text on light */
+  --color-muted-on-navy: #b7c5d6; /* secondary text on navy */
+  --color-line: #dce4ee; /* borders */
+  --color-danger: #b42318; /* form errors */
+  --color-danger-soft: #fef3f2;
+  --color-success: #067647;
+  --color-success-soft: #ecfdf3;
+
+  /* Typography */
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Shape */
+  --radius-card: 1rem;
+  --radius-control: 0.625rem;
+  --shadow-card: 0 1px 2px rgb(7 24 46 / 0.06), 0 8px 24px rgb(7 24 46 / 0.06);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+  }
+  body {
+    background: var(--color-offwhite);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Small spaced-caps label used above headings (echoes "R E P A I R" in the logo). */
+  .eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  /* Form controls */
+  .control {
+    width: 100%;
+    min-height: 2.875rem;
+    border: 1px solid #b9c5d4;
+    border-radius: var(--radius-control);
+    background: #fff;
+    padding: 0.625rem 0.875rem;
+    font-size: 1rem; /* 16px: prevents iOS zoom on focus */
+    color: var(--color-ink);
+  }
+  .control:focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 1px;
+    border-color: var(--color-blue);
+  }
+  .control[aria-invalid="true"] {
+    border-color: var(--color-danger);
+    background: var(--color-danger-soft);
+  }
+}
