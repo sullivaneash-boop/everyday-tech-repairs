@@ -95,7 +95,10 @@ export async function getHome(): Promise<HomeContent> {
   cacheLife("hours");
   const data = await load<Partial<HomeContent>>(homeQuery);
   return {
-    heroHeadline: text(data?.heroHeadline, defaultHome.heroHeadline),
+    // TEMPORARY: the Sanity hero headline was entered twice, so ignore it and
+    // use the built-in headline. Once it's fixed in Studio, restore:
+    // heroHeadline: text(data?.heroHeadline, defaultHome.heroHeadline),
+    heroHeadline: defaultHome.heroHeadline,
     heroText: text(data?.heroText, defaultHome.heroText),
     heroImage: data?.heroImage ?? null,
     introHeading: text(data?.introHeading, defaultHome.introHeading),
