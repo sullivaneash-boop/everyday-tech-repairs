@@ -25,9 +25,9 @@ Sanity Manage → project → API → CORS origins. Use origins only, without `/
 | Existing local Studio default | `http://localhost:3333` | Not used by this embedded Studio | Credentialed CORS already present |
 | Current Vercel site | `https://everyday-tech-repairs.vercel.app` | `https://everyday-tech-repairs.vercel.app/api/revalidate` | CORS absent in inspected list |
 | PR #1 branch preview | `https://everyday-tech-repairs-git-co-440f1e-sullivaneash-2433s-projects.vercel.app` | That origin + `/api/revalidate` | Add this exact trusted origin for Studio; keep environment/secret separate; deployment protection applies |
-| Production domain | `https://everydaytechrepair.com` | `https://everydaytechrepair.com/api/revalidate` | CORS absent in inspected list; domain listed in Vercel; Studio access not verified |
+| Production domain | `https://www.everydaytechrepair.com` | `https://www.everydaytechrepair.com/api/revalidate` | Actual final host after apex redirect; add credentialed CORS; Studio login and webhook delivery unverified |
 
-Add `https://www.everydaytechrepair.com` only if Studio is served there instead of redirecting to the apex. CORS governs browser access; it does not configure server-to-server webhook delivery. A protected preview webhook must also pass Vercel's deployment protection using an owner-approved setup; a redirect to login is not successful revalidation.
+Production HTTP checks on 23 November confirmed the apex redirects to `www`. Use the final `www` origin for Studio CORS and the webhook URL above, avoiding a webhook redirect. CORS governs browser access; it does not configure server-to-server webhook delivery. A protected preview webhook must also pass Vercel's deployment protection using an owner-approved setup; a redirect to login is not successful revalidation.
 
 For local webhook testing, send a synthetic signed POST directly to the local server. A real Sanity delivery to localhost needs a separately approved public tunnel; no tunnel or extra service was added.
 
@@ -80,3 +80,5 @@ Still required: publishing/editing aboutPage, service, project and review with g
 Sources: [Sanity CORS](https://www.sanity.io/docs/content-lake/cors), [webhook best practices](https://www.sanity.io/docs/content-lake/webhook-best-practices), [Next.js webhook integration](https://www.sanity.io/docs/nextjs/validating-sanity-webhooks-nextjs). Cache behavior was also checked against the installed Next.js 16.4.6 guides under `node_modules/next/dist/docs/`.
 
 PR #1 preview verification: Vercel built commit `9e498910974772fa3b5beaf356bef7a92abb6c46` successfully. Authenticated HTTP checks returned 200 for Home, Request a Repair and Sell Your Device; the homepage headline was the exact restored value. Preview robots.txt disallows indexing. This did not submit either form or test deployed Studio login.
+
+Production verification after PR #1: commit `f3fa298ed7f1fe0c11026afb129cd7efefb840a3` reached Vercel READY and was assigned both custom domains. Home, both inquiry pages, Services, About, Our Work and Reviews returned HTTP 200 on the final `www` host; the original headline matched exactly. A deployment-scoped error/fatal log count returned no records in the immediate check window. This does not establish ongoing monitoring; drain configuration could not be inspected (API returned 404). No live submission or production webhook was sent.

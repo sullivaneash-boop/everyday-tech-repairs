@@ -24,7 +24,8 @@ Status updated 23 November 2026. ✅ = verified · ☐ = still to do.
 - ✅ Existing Sanity project identified and connected locally; Studio login verified
 - ☐ Deployed Studio CORS, owner Administrator/billing and webhook configuration confirmed
 - ☐ Formspree paid plan active; two forms created; IDs set in Vercel
-- ☐ Domain connected in Vercel; HTTPS active; `www` redirects to apex
+- ✅ Custom domains assigned to production; HTTPS pages load; apex currently redirects to `www`
+- ☐ Confirm preferred canonical host and align NEXT_PUBLIC_SITE_URL with the observed redirect
 - ☐ GA4 property created; ID set (optional)
 - ☐ Search Console verified; sitemap submitted
 
@@ -74,3 +75,5 @@ Status updated 23 November 2026. ✅ = verified · ☐ = still to do.
 - ☐ Owner selects photo-upload approach and approves any new provider/cost (PHOTO_UPLOAD_OPTIONS.md)
 - ☐ About/service/project/review publishing and real image/reference handling tested with approved content
 - ☐ Real Sanity webhook and production cache refresh tested; localhost test does not establish this
+
+- ✅ PR #1 merged; Vercel production READY on `f3fa298`; seven public pages and original homepage headline checked

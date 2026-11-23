@@ -24,7 +24,7 @@ Each account should be created with the owner's email, or transferred to it. Tic
 - Registrar: **_to be filled in_** · Renewal date: **_to be filled in_** · Auto-renew: **_confirm ON_**
 - DNS records needed (shown in Vercel → Project → Settings → Domains):
   - Apex `everydaytechrepair.com` → Vercel's A record
-  - `www` → Vercel's CNAME, redirecting to the apex
+  - `www` → Vercel's CNAME. Observed 23 November: apex redirects to `www` (the reverse of the original launch plan). Align the chosen canonical site URL at launch.
 - If the business uses email on this domain, **do not remove existing MX/TXT records** when editing DNS.
 
 ## 3. Hosting & deployment
@@ -79,3 +79,7 @@ Each account should be created with the owner's email, or transferred to it. Tic
 - The supplied brand files include only the full-color logo and icon. A reversed (light) logo for dark backgrounds would improve the footer (DECISIONS.md #12).
 
 **Not in scope for this release:** product inventory, online checkout, repair status tracking, customer accounts, appointment scheduling.
+
+## Production release verification
+
+PR #1 merged as `f3fa298` on 23 November 2026. Vercel production reached READY; seven public routes returned HTTP 200 at `https://www.everydaytechrepair.com`, and the restored homepage headline matched. Immediate deployment-scoped error/fatal counts were empty. No Formspree submission or Sanity-originated webhook was tested. Production CORS/webhook setup must use the observed final `www` origin; see SANITY_SETUP.md.
