@@ -1,6 +1,6 @@
 # Launch Checklist
 
-Status at handoff of the codebase (16 November 2026). ✅ = verified · ☐ = still to do.
+Status updated 23 November 2026. ✅ = verified · ☐ = still to do.
 
 ## Built and verified locally
 - ✅ All pages implemented: Home, Services, Request a Repair, Sell Your Device, Our Work, Reviews, About, Contact, Privacy, 404
@@ -19,9 +19,10 @@ Status at handoff of the codebase (16 November 2026). ✅ = verified · ☐ = st
 - ✅ No use of the restricted word in any public copy
 
 ## Accounts (owner-owned; see HANDOFF.md)
-- ☐ GitHub repository created and code pushed
+- ✅ GitHub repository exists and initial code is pushed
 - ☐ Vercel Pro project created; environment variables set
-- ☐ Sanity project created; CORS origins added; owner is Administrator
+- ✅ Existing Sanity project identified and connected locally; Studio login verified
+- ☐ Deployed Studio CORS, owner Administrator/billing and webhook configuration confirmed
 - ☐ Formspree paid plan active; two forms created; IDs set in Vercel
 - ☐ Domain connected in Vercel; HTTPS active; `www` redirects to apex
 - ☐ GA4 property created; ID set (optional)
@@ -59,3 +60,17 @@ Status at handoff of the codebase (16 November 2026). ✅ = verified · ☐ = st
 - ☐ Remove developer access everywhere (HANDOFF.md section 5)
 - ☐ Owner walkthrough of OWNER_GUIDE.md completed
 - ☐ First monthly form test scheduled
+
+
+## Integration audit verification (23 November 2026)
+- ✅ Final audit checks: 15 tests, TypeScript, ESLint and production build passed
+- ✅ Human-readable form payloads and useful subjects; required validation and files retained
+- ✅ Upload entitlement error is explicit; mocked tests confirm no silent retry or dropped attachments
+- ✅ All six GROQ projections, featured-reference ordering/filtering, missing assets and loader fallbacks tested locally
+- ✅ Signed webhook verification exercised with the real signing library; local production runtime accepts signed and rejects unsigned requests
+- ✅ Actual local Studio: business name published; homepage test published, observed in API/page, and restored exactly
+- ✅ Temporary hardcoded headline override removed after restoring stored content
+- ☐ Actual Formspree plan, premium notification template availability and inbox delivery verified
+- ☐ Owner selects photo-upload approach and approves any new provider/cost (PHOTO_UPLOAD_OPTIONS.md)
+- ☐ About/service/project/review publishing and real image/reference handling tested with approved content
+- ☐ Real Sanity webhook and production cache refresh tested; localhost test does not establish this

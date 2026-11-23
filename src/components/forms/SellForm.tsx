@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { deviceCategoryLabel, FORMSPREE } from "@/config/business";
+import { buildSellPayload } from "@/lib/forms/payloads";
+import { FORMSPREE } from "@/config/business";
 import { COSMETIC_CONDITIONS, FUNCTIONAL_CONDITIONS, sellSchema } from "@/lib/forms/schemas";
 import { ContactFields } from "./ContactFields";
 import { DeviceTypeFields } from "./DeviceTypeFields";
@@ -39,37 +40,7 @@ export function SellForm({ contact }: { contact: ContactFallback }) {
     formId: FORMSPREE.sell,
     photosRequired: true,
     successEvent: "sell_device_submitted",
-    buildPayload: (v) => {
-      const device = v.deviceType === "other" ? `Other: ${v.deviceTypeOther}` : deviceCategoryLabel(v.deviceType);
-      return {
-        subject: `Device for sale: ${v.brand} ${v.model} (${v.firstName} ${v.lastName})`,
-        fields: [
-          ["Inquiry Type", "Sell Your Device"],
-          ["First Name", v.firstName],
-          ["Last Name", v.lastName],
-          ["Phone", v.phone],
-          ["email", v.email],
-          ["Street Address", v.street],
-          ["City", v.city],
-          ["State", v.state],
-          ["ZIP Code", v.zip],
-          ["Device Type", device],
-          ["Device Brand", v.brand],
-          ["Device Model", v.model],
-          ["Storage Capacity", v.storage],
-          ["Powers On", v.powersOn],
-          ["Functional Condition", v.functionalCondition],
-          ["Cosmetic Condition", v.cosmeticCondition],
-          ["Condition / Issues", v.condition],
-          ["Damage", v.damage],
-          ["Missing Parts", v.missingParts],
-          ["Included Accessories", v.accessories],
-          ["Asking Price", v.askingPrice],
-          ["Additional Information", v.details],
-          ["Ownership Confirmed", "Yes, seller confirmed they own or are authorized to sell this device"],
-        ],
-      };
-    },
+    buildPayload: buildSellPayload,
   });
 
   if (form.status === "success") {

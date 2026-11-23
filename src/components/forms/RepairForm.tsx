@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { deviceCategoryLabel, FORMSPREE } from "@/config/business";
+import { buildRepairPayload } from "@/lib/forms/payloads";
+import { FORMSPREE } from "@/config/business";
 import { repairSchema } from "@/lib/forms/schemas";
 import { ContactFields } from "./ContactFields";
 import { DeviceTypeFields } from "./DeviceTypeFields";
@@ -32,29 +33,7 @@ export function RepairForm({ contact }: { contact: ContactFallback }) {
     formId: FORMSPREE.repair,
     photosRequired: false,
     successEvent: "repair_request_submitted",
-    buildPayload: (v) => {
-      const device = v.deviceType === "other" ? `Other: ${v.deviceTypeOther}` : deviceCategoryLabel(v.deviceType);
-      return {
-        subject: `Repair request: ${device} (${v.firstName} ${v.lastName})`,
-        fields: [
-          ["Inquiry Type", "Repair Request"],
-          ["First Name", v.firstName],
-          ["Last Name", v.lastName],
-          ["Phone", v.phone],
-          ["email", v.email],
-          ["Street Address", v.street],
-          ["City", v.city],
-          ["State", v.state],
-          ["ZIP Code", v.zip],
-          ["Device Type", device],
-          ["Device Brand", v.brand],
-          ["Device Model", v.model],
-          ["Powers On", v.powersOn],
-          ["Description of Issue", v.issue],
-          ["Additional Information", v.details],
-        ],
-      };
-    },
+    buildPayload: buildRepairPayload,
   });
 
   if (form.status === "success") {

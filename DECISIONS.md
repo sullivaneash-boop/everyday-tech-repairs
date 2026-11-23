@@ -10,9 +10,9 @@ Significant technical decisions and their tradeoffs, newest last.
 
 **4. Photos are shrunk in the browser before upload.** Formspree allows 25 MB per file and 100 MB per request but times out at 30 seconds. Five untouched phone photos can exceed that on mobile data. Resizing to 2000 px JPEG keeps a typical submission under 3 MB. This is ~60 lines of standard canvas code, with no upload infrastructure.
 
-**5. Five photos maximum, sent as `photo_1`…`photo_5`.** Formspree's pages disagree on the per-submission cap (5 vs 10); five is safe under both.
+**5. Five photos maximum, sent as `Photo 1`…`Photo 5` (updated in decision 16).** Formspree's pages disagree on the per-submission cap (5 vs 10); five is safe under both.
 
-**6. Content refresh = cache tag + webhook, with an hourly fallback.** Chosen over Sanity's Live Content API because it ships no extra client JavaScript and has one moving part. If the webhook is ever misconfigured, edits still appear within about an hour.
+**6. Content refresh = cache tag + webhook, with an hourly fallback.** Chosen over Sanity's Live Content API because it ships no extra client JavaScript and has one moving part. Without a working webhook, a request after the hourly revalidation interval triggers a background refresh; there is no guaranteed one-hour publishing deadline.
 
 **7. No draft preview / visual editing.** Sanity's draft-then-publish flow is clear enough for this site, and preview mode needs an API token and extra code paths. Revisit if the owner asks for it.
 
@@ -31,3 +31,12 @@ Significant technical decisions and their tradeoffs, newest last.
 **14. Analytics honors GPC/DNT instead of a cookie banner.** Keeps the interface clean for a US local business while respecting browser-level opt-outs. If the business later targets regions requiring opt-in consent, add a consent banner.
 
 **15. Not built (by design):** inventory/product pages, checkout, repair tracking, accounts, scheduling, custom inquiry dashboard. The route-group structure and Sanity schema folder leave room to add them.
+
+
+**16. Owner-friendly lead payloads (23 November 2026).** Centralized typed payload builders preserve required form/schema keys, lead with contact/device/issue or condition, then address and optional details. Use documented `subject`, exact `email` for Reply-To and readable photo labels. Actual email layout is Formspree-controlled; Business templates and live delivery are unverified. No paid upgrade made.
+
+**17. Keep upload failures explicit.** The reported file-upload rejection is consistent with Formspree's paid-plan requirement. Preserve customer entries and files and explain the failure; never silently omit photos or claim success. Alternative-provider research is documented in PHOTO_UPLOAD_OPTIONS.md; no new storage provider is selected or connected.
+
+**18. Fix Sanity reference projections and bound outages.** Dereference featured arrays before filtering, exclude missing/wrong-type targets and unresolved image assets, and query singletons by fixed IDs. Limit Sanity fetches to eight seconds with no retries; fallback logs contain no arbitrary error payloads. Local regression tests cover all loaders and queries.
+
+**19. Restore CMS control of the headline.** The duplicate headline in Sanity was corrected and verified against the API/local page. Remove main's temporary hardcoded override; a regression test confirms published headlines are used. Only existing business content was published. Other real document types and hosted webhook delivery remain open; see SANITY_SETUP.md.

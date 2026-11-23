@@ -12,5 +12,7 @@ export const client = projectId
       apiVersion,
       useCdn: false, // responses are cached by Next.js (see content.ts), so always read fresh
       perspective: "published",
+      timeout: 8_000, // reach the fallback before a slow API stalls rendering
+      maxRetries: 0,
     })
   : null;
