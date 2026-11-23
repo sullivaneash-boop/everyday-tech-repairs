@@ -37,8 +37,8 @@ async function load<T>(query: string): Promise<T | null> {
   if (!client) return null;
   try {
     return await client.fetch<T | null>(query);
-  } catch (error) {
-    console.error("[sanity] content request failed:", error instanceof Error ? error.message : error);
+  } catch {
+    console.error("[sanity] content request failed; using fallback content.");
     return null;
   }
 }
@@ -95,10 +95,7 @@ export async function getHome(): Promise<HomeContent> {
   cacheLife("hours");
   const data = await load<Partial<HomeContent>>(homeQuery);
   return {
-    // TEMPORARY: the Sanity hero headline was entered twice, so ignore it and
-    // use the built-in headline. Once it's fixed in Studio, restore:
-    // heroHeadline: text(data?.heroHeadline, defaultHome.heroHeadline),
-    heroHeadline: defaultHome.heroHeadline,
+    heroHeadline: text(data?.heroHeadline, defaultHome.heroHeadline),
     heroText: text(data?.heroText, defaultHome.heroText),
     heroImage: data?.heroImage ?? null,
     introHeading: text(data?.introHeading, defaultHome.introHeading),

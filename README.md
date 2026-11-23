@@ -12,7 +12,7 @@ Marketing and inquiry website for **Everyday Tech Repair** (everydaytechrepair.c
 | Hosting | Vercel (Pro, since Hobby is non-commercial only) |
 | Analytics | Google Analytics 4 (optional, env-gated) |
 
-Related docs: [OWNER_GUIDE](OWNER_GUIDE.md) · [HANDOFF](HANDOFF.md) · [MAINTENANCE](MAINTENANCE.md) · [DECISIONS](DECISIONS.md) · [LAUNCH_CHECKLIST](LAUNCH_CHECKLIST.md) · [COSTS](COSTS.md)
+Related docs: [OWNER_GUIDE](OWNER_GUIDE.md) · [HANDOFF](HANDOFF.md) · [MAINTENANCE](MAINTENANCE.md) · [DECISIONS](DECISIONS.md) · [LAUNCH_CHECKLIST](LAUNCH_CHECKLIST.md) · [COSTS](COSTS.md) · [Sanity setup](SANITY_SETUP.md) · [Notification audit](FORMSPREE_NOTIFICATIONS.md) · [Photo upload options](PHOTO_UPLOAD_OPTIONS.md)
 
 ## Local development
 
@@ -32,6 +32,7 @@ The site runs with **no** environment variables: it shows built-in fallback copy
 | `npm run build` | Production build (also type-checks) |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
+| `npm test` | Local form, GROQ, fallback and signed webhook regression tests |
 | `npx tsc --noEmit` | Type check only |
 
 ## Environment variables
@@ -86,7 +87,7 @@ icon/ wordmark/ *.ai        Original brand source files (not served)
 
 ## How the pieces fit
 
-**Content (Sanity).** `src/lib/sanity/content.ts` holds one cached loader per content type (`"use cache"` + tag `sanity`). When the owner publishes, a Sanity webhook calls `/api/revalidate`, which clears the tag; the next visitor gets fresh content with no redeploy. As a safety net the cache also refreshes about hourly. Every loader falls back to defaults if Sanity is unreachable or empty.
+**Content (Sanity).** `src/lib/sanity/content.ts` holds one cached loader per content type (`"use cache"` + tag `sanity`). Once configured, a Sanity webhook calls `/api/revalidate`, which clears the tag; the next visitor gets fresh content with no redeploy. Without the webhook, the next request after the hourly revalidation interval triggers a background refresh; this is not a guaranteed publishing deadline. Every loader falls back to defaults if Sanity is unreachable or empty.
 
 **Inquiries (Formspree).** Forms validate in the browser with Zod (`src/lib/forms/schemas.ts`), shrink photos client-side, then POST `multipart/form-data` straight to `https://formspree.io/f/{id}`. The success screen appears only after Formspree responds OK. No inquiry data touches Vercel or Sanity.
 
@@ -95,11 +96,7 @@ icon/ wordmark/ *.ai        Original brand source files (not served)
 ## Setting up the integrations
 
 ### Sanity
-1. Create a project at sanity.io/manage (owner's account). Dataset: `production`, **public**.
-2. Set `NEXT_PUBLIC_SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_DATASET`.
-3. In the project → API → CORS origins, add `http://localhost:3000` and `https://everydaytechrepair.com` with **Allow credentials**.
-4. Open `/studio`, sign in, and publish Business Information, Homepage, and About Page.
-5. API → Webhooks → create: URL `https://everydaytechrepair.com/api/revalidate`, trigger on Create/Update/Delete, filter empty, secret = `SANITY_REVALIDATE_SECRET`.
+The existing project is `d7zg1vqo`, dataset `production`. Local Studio login and homepage publish/read/restore were verified; the production webhook and deployed Studio login remain unverified. Follow [SANITY_SETUP.md](SANITY_SETUP.md) for exact CORS origins, webhook filter, secret handling and outstanding checks. Do not create another project.
 
 ### Formspree
 1. Create two forms in the owner's account: "Repair Requests" and "Sell Your Device Requests".

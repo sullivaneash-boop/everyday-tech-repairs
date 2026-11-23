@@ -5,6 +5,7 @@ import type { z } from "zod";
 import { type AnalyticsEvent, track } from "@/lib/analytics";
 import type { Photo } from "@/lib/forms/photos";
 import { type FieldErrors, validate } from "@/lib/forms/schemas";
+import { buildFormData, type InquiryPayload } from "@/lib/forms/payloads";
 import { submitToFormspree } from "@/lib/forms/submit";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -16,7 +17,7 @@ type Options<S extends z.ZodType> = {
   /** At least one photo required? */
   photosRequired: boolean;
   /** Turns validated values into the labelled fields + subject the owner sees. */
-  buildPayload: (values: z.output<S>) => { subject: string; fields: [label: string, value: string][] };
+  buildPayload: (values: z.output<S>) => InquiryPayload;
   successEvent: AnalyticsEvent;
 };
 
@@ -65,15 +66,11 @@ export function useInquiryForm<S extends z.ZodType>({ schema, formId, photosRequ
       return;
     }
 
-    const { subject, fields } = buildPayload(result.values);
-    const outgoing = new FormData();
-    outgoing.append("_subject", subject);
-    for (const [label, value] of fields) {
-      if (value) outgoing.append(label, value);
-    }
-    // Honeypot: real visitors never fill this in; Formspree discards submissions that do.
-    outgoing.append("_gotcha", String(formData.get("_gotcha") ?? ""));
-    photos.forEach((photo, i) => outgoing.append(`photo_${i + 1}`, photo.file, photo.file.name));
+    const outgoing = buildFormData(
+      buildPayload(result.values),
+      photos.map((photo) => photo.file),
+      String(formData.get("_gotcha") ?? ""),
+    );
 
     inFlight.current = true;
     setStatus("submitting");

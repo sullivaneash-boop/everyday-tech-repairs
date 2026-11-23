@@ -31,6 +31,13 @@ export async function submitToFormspree(formId: string, data: FormData): Promise
     if (response.ok && json.ok !== false) return { ok: true };
 
     const detail = json.errors?.map((e) => e.message).filter(Boolean).join(" ") || json.error;
+    if (detail && /file uploads? not permitted/i.test(detail)) {
+      return {
+        ok: false,
+        retryable: false,
+        message: "Photo uploads are unavailable right now. Your request was not sent, and your entries and photos are still here. Please contact us directly or try again later.",
+      };
+    }
     if (response.status === 429) {
       return { ok: false, retryable: true, message: "We're receiving a lot of requests right now. Please wait a minute and try again." };
     }

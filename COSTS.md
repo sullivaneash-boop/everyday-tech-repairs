@@ -1,19 +1,19 @@
 # Costs & Subscriptions
 
-Prices were checked on the providers' public pricing pages on **16 November 2026**. Prices change; confirm on each provider's site before subscribing. No subscriptions have been purchased yet. All accounts should be created under, and billed to, the business owner.
+Prices were checked on the providers' public pricing pages on **16 November 2026**. Prices change; confirm on each provider's site before subscribing. No subscriptions were purchased or upgraded by this audit; existing account billing is unverified. All accounts should be created under, and billed to, the business owner.
 
 ## Summary
 
 | Service | Needed plan | Listed price | Required? |
 |---|---|---|---|
 | Vercel (hosting) | Pro | $20 / month per developer seat | Yes |
-| Formspree (inquiries) | Personal | $10 / month | Yes, for photo uploads |
+| Formspree (inquiries) | Personal | $15/month or $120/year | If retaining Formspree photo uploads |
 | Sanity (content) | Free | $0 | Yes |
 | Domain name | n/a | Varies by registrar (yearly) | Yes |
 | Google Analytics 4 | Free | $0 | Optional |
 | Google Search Console | Free | $0 | Recommended |
 
-Expected baseline: **about $30 / month plus the yearly domain renewal.**
+With the listed hosting allowance, Formspree totals approximately **$35/month**, or **$30/month equivalent with annual Formspree billing**, plus domain renewal. Photo-provider alternatives are in [PHOTO_UPLOAD_OPTIONS.md](PHOTO_UPLOAD_OPTIONS.md).
 
 ## Vercel
 - **Why Pro:** Vercel's terms limit the free Hobby plan to personal, non-commercial use. A business site needs Pro.
@@ -22,18 +22,16 @@ Expected baseline: **about $30 / month plus the yearly domain renewal.**
 - **If a payment fails:** Vercel emails the account owner and may pause the site until billing is fixed.
 
 ## Formspree
-| Plan | Listed price | Submissions / month | Photo storage | Notes |
-|---|---|---|---|---|
-| Free | $0 | 50 | none | **No file uploads**; dashboard keeps 30 days; no export |
-| Personal | $10 / month | 200 | 1 GB | Uploads, unlimited archive, CSV/JSON export |
-| Professional | $20 / month | 2,000 | 5 GB | 2 team members, advanced spam control |
+Rechecked [official pricing](https://formspree.io/plans) on **23 November 2026**. Earlier $10/$20/$60 figures are annual-billing monthly equivalents, not monthly-billing prices.
 
-- **Recommended: Personal.** The Sell Your Device form requires a photo, and file uploads are not available on Free.
-- **Pricing caveat:** the plans page showed $10/$20/$60 in its visible text but $15/$30/$90 in its page metadata. Confirm the real price at checkout.
-- **Limits:** 25 MB per file, 100 MB per submission. The website shrinks photos before upload (typically under 1 MB each), so 1 GB holds a large number of submissions.
-- **When storage is full:** Formspree deletes the oldest files first. Clean up periodically.
-- **Over the submission limit:** Formspree's pricing page does not state what happens. Confirm with Formspree; upgrade if volume approaches 200/month.
-- Both forms count toward one account's monthly limit.
+| Plan | Monthly billing | Annual billing | Submissions/month | Upload storage |
+|---|---|---|---|---|
+| Free | $0 | $0 | 50 | None |
+| Personal | $15 | $120 | 200 | 1 GB |
+| Professional | $30 | $240 | 2,000 | 5 GB |
+| Business | $90 | $720 | 20,000 | 10 GB |
+
+Personal is the lowest plan with uploads; custom notification templates require Business. The current account plan was not verified, and no upgrade was made. The reported upload rejection remains unresolved until the owner enables uploads or selects a different provider. Both forms share account limits. Confirm storage retention, over-limit behavior and photo-link access before launch. See FORMSPREE_NOTIFICATIONS.md.
 
 ## Sanity
 - **Free plan:** up to 20 seats (Administrator and Viewer roles), 2 public datasets, 10,000 documents, 100 GB assets, 100 GB bandwidth/month, 250k API requests/month.
