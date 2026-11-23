@@ -24,7 +24,7 @@ Sanity Manage → project → API → CORS origins. Use origins only, without `/
 | Local | `http://localhost:3000` | Local `/api/revalidate` cannot be reached directly by Sanity | Credentialed CORS already present; Studio login verified |
 | Existing local Studio default | `http://localhost:3333` | Not used by this embedded Studio | Credentialed CORS already present |
 | Current Vercel site | `https://everyday-tech-repairs.vercel.app` | `https://everyday-tech-repairs.vercel.app/api/revalidate` | CORS absent in inspected list |
-| PR/branch preview | Exact HTTPS origin from that Vercel deployment | That origin + `/api/revalidate` | Add the exact trusted preview origin when known; keep environment/secret separate |
+| PR #1 branch preview | `https://everyday-tech-repairs-git-co-440f1e-sullivaneash-2433s-projects.vercel.app` | That origin + `/api/revalidate` | Add this exact trusted origin for Studio; keep environment/secret separate; deployment protection applies |
 | Production domain | `https://everydaytechrepair.com` | `https://everydaytechrepair.com/api/revalidate` | CORS absent in inspected list; domain listed in Vercel; Studio access not verified |
 
 Add `https://www.everydaytechrepair.com` only if Studio is served there instead of redirecting to the apex. CORS governs browser access; it does not configure server-to-server webhook delivery. A protected preview webhook must also pass Vercel's deployment protection using an owner-approved setup; a redirect to login is not successful revalidation.
@@ -78,3 +78,5 @@ Images resolve asset URL, dimensions and LQIP, plus schema alt/hotspot. Query re
 Still required: publishing/editing aboutPage, service, project and review with genuine approved content and checking corresponding site output; broader siteSettings fields; homepage reference selection against real service/project documents, actual asset upload/crop rendering, real unpublish/delete handling, deployed Studio authentication/CORS, Sanity-originated webhook delivery to each target environment, and cache freshness on Vercel. Genuine review and completed-work content must come from the owner before those document types can be published. Detailed final audit outcomes are in HANDOFF.md.
 
 Sources: [Sanity CORS](https://www.sanity.io/docs/content-lake/cors), [webhook best practices](https://www.sanity.io/docs/content-lake/webhook-best-practices), [Next.js webhook integration](https://www.sanity.io/docs/nextjs/validating-sanity-webhooks-nextjs). Cache behavior was also checked against the installed Next.js 16.4.6 guides under `node_modules/next/dist/docs/`.
+
+PR #1 preview verification: Vercel built commit `9e498910974772fa3b5beaf356bef7a92abb6c46` successfully. Authenticated HTTP checks returned 200 for Home, Request a Repair and Sell Your Device; the homepage headline was the exact restored value. Preview robots.txt disallows indexing. This did not submit either form or test deployed Studio login.

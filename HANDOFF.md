@@ -68,6 +68,7 @@ Each account should be created with the owner's email, or transferred to it. Tic
 
 **Final local checks — 23 November 2026**
 - `npm test`: all 15 tests passed; `npx tsc --noEmit`, `npm run lint`, and `npm run build` passed against the integrated branch and connected public Sanity project. Build generated all 18 pages.
+- Vercel PR #1 preview built successfully; Home and both inquiry routes returned 200, the restored headline rendered correctly, and preview robots.txt disallowed indexing. This was a page-load check, not an inquiry submission test.
 - All six real Sanity queries succeeded; only Business Information and Homepage currently have published documents.
 
 **To verify once Formspree is live**
